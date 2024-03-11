@@ -1,8 +1,8 @@
 #Шеннон Фано 
 from divide import divide
 from get_probability_dist import get_freq
-
-
+from main_entropy import calc_entropy
+import math
 class Node:
     def __init__(self, symbol=None, probability=[]):
         self.code = None 
@@ -11,47 +11,7 @@ class Node:
         self.left = None
         self.right = None
 
-    # def insert_binary_tree(self, data):
-    #     """
-    #     Обычная вставка в бинарное дерево 
-    #     """
-    #     if self.data == data:
-    #         return 
-    #     elif self.data < data:
-    #         if self.right is None:
-    #             self.right = Node(data)
-    #         else:
-    #             self.right.insert(data)
-    #     else: # self.data > data
-    #         if self.left is None:
-    #             self.left = Node(data)
-    #         else:
-    #             self.left.insert(data)
-        
 
-# def split_list(numbers):
-#     """
-#     Разделение списка на два списка таким образов, чтобы суммы элементов списков примерно были равны 
-#     """
-#     numbers.sort(reverse=True)  # Сортировка чисел по убыванию на всякий случай 
-    
-#     if len(numbers) == 1:
-#         return [Node(probability=numbers)], [] 
-
-#     list1 = []
-#     list2 = []
-#     sum1 = 0
-#     sum2 = 0
-
-#     for number in numbers:
-#         if sum1 <= sum2:
-#             list1.append(number)
-#             sum1 += number
-#         else: # sum1 > sum2
-#             list2.append(number)
-#             sum2 += number
-
-#     return list1, list2
 
 def insert_list_to_tree(tree, symbols, numbers):
     '''
@@ -92,41 +52,58 @@ def assign_codes(node, code=''):
         assign_codes(node.left, code + '0')
         assign_codes(node.right, code + '1')
 
-
+dict_len = {}
 def print_tree_with_codes(node):
     if node is not None:
         print_tree_with_codes(node.left)
         if not node.left and not node.right:
+           # dict_len[node.code] = node.probability[0]
+            dict_len.update({node.code : node.probability[0]})
+            
             print(f'Symbol: {node.symbol};  Value: {node.probability[0]}; Code: {node.code}')
         print_tree_with_codes(node.right)
+    return dict_len
 
 #------------------------------------------------------------------
-        
+
 
 if __name__ == '__main__':
     symbol3 = ['a1', 'a2', 'a3', 'a4', 'a5', 'a6', 'a7', 'a8']
     prob3 = [0.3, 0.2, 0.15, 0.1, 0.08, 0.07, 0.05, 0.05]
     symbol2 = ['a1', 'a2', 'a3', 'a4', 'a5', 'a6']
     prob2 = [0.4, 0.3, 0.1, 0.08, 0.07, 0.05]
-
-    symbol, prob, dict_freq = get_freq('привет дорогой мой мир')
+    word = 'привет дорогой мой мир'
+    symbol, prob, dict_freq = get_freq(word)
     dict_prob = dict(zip(prob3, symbol3)) # словарь для дальнейшего декодирования 
 
    # print(decode_symbol_dict)
     # print(split_list(prob))
-    print(dict_prob)
+    print(dict_freq)
 
     print(f'----------------------------------------------')
 
-    root = Node(symbol=symbol3, probability=prob3)
-    print(root.probability)
-    final_tree = insert_list_to_tree(root, symbol3, prob3)
+    root = Node(symbol=symbol, probability=prob)
+    final_tree = insert_list_to_tree(root, symbol, prob)
     
     print_tree(final_tree)
         
     assign_codes(final_tree) 
     
-    print_tree_with_codes(final_tree)
+    dict_len = print_tree_with_codes(final_tree)
+    print(dict_len)
 
-    print(f"------------------------")
+    print(f"-----------------------------------------------")
     
+    total_sum = sum(dict_len.values())
+    # Получаем список длин ключей и список вероятностей значений
+    key_lengths = [len(key) for key in dict_len.keys()]
+    probabilities = [value / total_sum for value in dict_len.values()]
+    
+    #считаем среднюю длинну кодового слова и среднюю скорость неравномерного кодирования
+    lenght_avg = sum([key_lengths * probabilities for key_lengths, probabilities in zip(key_lengths, probabilities)])
+    print(f'Средняя длинна кодового слова: {lenght_avg}')
+    entropy = calc_entropy(word)
+    print(f"Энтропиия данного сообщения: {entropy}")
+
+    print(f"Коэффициент статистического сжатия: {math.log2(total_sum) / lenght_avg}")
+    print(f"Кэффициент относительной эффективности: {entropy/lenght_avg}")
