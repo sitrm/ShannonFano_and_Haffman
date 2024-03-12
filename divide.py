@@ -36,7 +36,7 @@ def divide_orig(my_list):
                 solution = [partition, remainder]
 
     return solution[0], solution[1]
-
+#-----------------------------------------------------
 def divide(my_dict):
     """
     Разделение словаря на два равных по сумме значений (частот), учитывая равенство частот
@@ -58,6 +58,7 @@ def divide(my_dict):
                             list(partition_values), list(remainder_values))
 
     return solution
+
 
 if __name__ == '__main__':
 

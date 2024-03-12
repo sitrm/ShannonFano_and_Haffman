@@ -1,8 +1,8 @@
 import math
 
-def get_freq(word:str)->float:
+def get_freq(word:str):
     """
-    Подсчет энтропии по формуле - sum p(a_i)*log[p(a_i)]
+    return: отсортированный список символов по вероятностям, отсортированный список вероятностей, отсортированный словарь (symbol : freq)
     """
     len_word = len(word)
 
@@ -17,7 +17,6 @@ def get_freq(word:str)->float:
     # for cur_symbol in set(word):
     #     freq[cur_symbol] /=len_word
     
-    # entropy = -sum([(freq[cur_symbol]/len_word) * math.log2(freq[cur_symbol]/len_word) for cur_symbol in set(word)])
     # отсортировали по убыванию вероятностей 
     sorted_dict_freq = {k: v for k, v in sorted(freq.items(), key=lambda item: item[1], reverse=True)}
 
@@ -25,7 +24,5 @@ def get_freq(word:str)->float:
 
 
 if __name__ == "__main__":
-
-    word = 'перепел'
 
     print(get_freq('привет дорогой мой мир'))

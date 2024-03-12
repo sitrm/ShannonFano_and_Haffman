@@ -70,12 +70,12 @@ def print_tree_with_codes(node):
 
 
 if __name__ == '__main__':
-    symbol3 = ['a1', 'a2', 'a3', 'a4', 'a5', 'a6', 'a7', 'a8']
-    prob3 = [0.3, 0.2, 0.15, 0.1, 0.08, 0.07, 0.05, 0.05]
-    symbol2 = ['a1', 'a2', 'a3', 'a4', 'a5', 'a6']
-    prob2 = [0.4, 0.3, 0.1, 0.08, 0.07, 0.05]
-    dict_prob = dict(zip(prob3, symbol3)) 
-    word = 'перепел'
+    # symbol3 = ['a1', 'a2', 'a3', 'a4', 'a5', 'a6', 'a7', 'a8']
+    # prob3 = [0.3, 0.2, 0.15, 0.1, 0.08, 0.07, 0.05, 0.05]
+    # symbol2 = ['a1', 'a2', 'a3', 'a4', 'a5', 'a6']
+    # prob2 = [0.4, 0.3, 0.1, 0.08, 0.07, 0.05]
+    # dict_prob = dict(zip(prob3, symbol3)) 
+    # word = 'перепел'
     #---------------------------------------------------------------------------------------
     path_to_file = './input.txt'
     
@@ -111,7 +111,7 @@ if __name__ == '__main__':
     #считаем среднюю длинну кодового слова и среднюю скорость неравномерного кодирования (l_ср = R_ср
     lenght_avg = sum([key_lengths * probabilities for key_lengths, probabilities in zip(key_lengths, probabilities)]) # sum(l_i * p_i)
     print(f'Средняя длинна кодового слова: {lenght_avg}')
-    entropy = calc_entropy(word)
+    entropy = calc_entropy(file_content)
     print(f"Энтропиия данного сообщения: {entropy}")
 
     print(f"Коэффициент статистического сжатия: {math.log2(total_sum) / lenght_avg}") # log N / R_ср
